@@ -1,0 +1,14 @@
+docker:
+  users:
+    - alex
+  name: docker-ce
+  repo: http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+  script_file: /tmp/install_docker.sh
+  registry_mirrors: https://registry.docker-cn.com
+
+pip:
+  index_url: http://pypi.douban.com/simple
+  trusted_host: pypi.douban.com
+
+
+log_file: /var/log/docker_install.log

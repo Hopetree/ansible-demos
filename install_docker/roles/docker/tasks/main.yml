@@ -1,0 +1,28 @@
+---
+
+- name: check docker
+  shell: docker -v
+  register: result
+  ignore_errors: True
+
+- name: include tasks yaml if not docker
+  include_tasks: install.yml
+  when: result is failed 
+
+- name: add users to docker group
+  user:
+    name: "{{ item }}"
+    group: docker
+    append: yes
+  with_items: "{{ docker.users }}"
+
+- name: set docker registry mirrors
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+
+- name: restart docker systemd
+  systemd:
+    name: docker
+    state: restarted
+    daemon_reload: yes

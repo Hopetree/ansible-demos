@@ -1,0 +1,15 @@
+---
+
+- name: check pip
+  shell: pip list
+  register: pip_result
+  ignore_errors: True
+
+- name: include tasks yaml if not pip
+  include_tasks: install_pip.yml
+  when: pip_result is failed
+
+- name: install docker-compose
+  pip:
+    name: docker-compose
+    extra_args: "-i {{ pip.index_url }} --trusted-host {{ pip.trusted_host }}"
